@@ -2,11 +2,11 @@
 
 
 
-Components :\ 
+Components : \ 
 WeMos D1 R2\
 ElectroPeak HC-SR501 PIR Sensor\
 Couple of cables\
-Optional : Battery\
+Optional : Battery \
 
 
 ! Important\
