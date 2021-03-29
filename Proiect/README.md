@@ -20,4 +20,4 @@ Camera Module\
 \
 Programming Languages:\
 C++ (Arduino)\
-Python with Flask,OpenCV\
+Python with Flask,OpenCV
