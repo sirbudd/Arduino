@@ -1,9 +1,10 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-const char* ssid = "YOUR_SSID";
-const char* password = "YOUR_PASSWORD";
-const char* mqtt_server = "192.168.XX.XXX";// Your Raspberry Pi IP address
+const char* ssid = "FalconVille";
+const char* password = "Pa55wordfalcon!";
+const char* mqtt_server = "192.168.50.125";// !!!! Raspberry Pi IP address !!!!
+const int PirPin = D5; // LED connected to pin D5
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -12,8 +13,8 @@ char msg[50];
 int value = 0;
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
-  Serial.begin(115200);
+  pinMode(PirPin, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
+  Serial.begin(9600);
   setup_wifi();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
@@ -49,15 +50,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   Serial.println();
 
-  // Switch on the LED if an 1 was received as first character
-  if ((char)payload[0] == '1') {
-    digitalWrite(BUILTIN_LED, LOW);   // Turn the LED on (Note that LOW is the voltage level
-    // but actually the LED is on; this is because
-    // it is acive low on the ESP-01)
-  } else {
-    digitalWrite(BUILTIN_LED, HIGH);  // Turn the LED off by making the voltage HIGH
-  }
-
 }
 
 void reconnect() {
@@ -88,10 +80,36 @@ void loop() {
   long now = millis();
   if (now - lastMsg > 2000) {
     lastMsg = now;
-    value=analogRead(A0);
-    snprintf (msg, 75, "%ld", value);
-    Serial.print("Publish message: ");
-    Serial.println(msg);
-    client.publish("sensor_data", msg);
+    value=digitalRead(D5);
+    if(value == HIGH)
+    {
+      snprintf (msg, 75, "%ld", value);
+      Serial.print("Publish message(HIGH): ");
+      Serial.println(msg);
+      client.publish("sensor_data", msg);
+    }
+    else if(value == LOW)
+    {
+      snprintf (msg, 75, "%ld", value);
+      Serial.print("Publish message(LOW): ");
+      Serial.println(msg);
+      client.publish("sensor_data", msg);
+    }
+    
   }
+  /**
+  if(digitalRead(D5)== HIGH)
+  {
+   motion = digitalRead(D5); //PIR sensor pin
+   Serial.println("Alarm detected!"); //Send things to serial for info
+   Serial.print("motion ");
+   Serial.println(motion);
+   delay(5000);
+  } 
+  else 
+  {
+    Serial.println("no trigger"); //enable for debugging of no event being triggered
+  }
+**/
+  
 }
