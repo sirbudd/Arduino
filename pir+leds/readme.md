@@ -1,0 +1,1 @@
+Arduino + PIR Sensor + Addressable led strip

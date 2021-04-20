@@ -15,13 +15,13 @@ void setup() {
 
 void loop(){
   if (digitalRead(PIR) == HIGH) { 
-    led_channel_0.writeCommand(IR_G);// check if the sensor is HIGH 
+    led_channel_0.writeCommand(IR_B);// check if the sensor is HIGH 
     Serial.println("Motion detected!");
-    delay(1000);                    // delay 1000 milliseconds 
+    delay(15000);                    // delay 30 sec = 30000 
   } 
   else {      
     digitalWrite(13, LOW);// turn LED OFF
     Serial.println("Motion stopped!");
-    delay(100);                   // delay 100 milliseconds
+    delay(1000);                   // delay 100 milliseconds
   }
 }
